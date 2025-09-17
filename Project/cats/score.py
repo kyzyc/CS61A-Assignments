@@ -10,8 +10,8 @@ if __name__ == '__main__':
     with open(pickled_file.strip(), 'rb') as pickled_dict:
         test_dict = pickle.load(pickled_dict)
 
-    with open(word_list.strip(), 'r', encoding='utf8') as correct_file:
-        correct_words = list(correct_file.read().split())
+    # with open(word_list.strip(), 'r', encoding='utf8') as correct_file:
+    #     correct_words = list(correct_file.read().split())
 
     start_time = time.time()
 

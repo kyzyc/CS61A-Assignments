@@ -323,6 +323,14 @@ def report_progress(typed, source, user_id, upload):
     """
     # BEGIN PROBLEM 8
     "*** YOUR CODE HERE ***"
+    matched = 0
+    for i in range(len(typed)):
+        if typed[i] == source[i]:
+            matched += 1
+        else:
+            break
+    upload({'id': user_id, 'progress': matched / len(source)})
+    return matched / len(source)
     # END PROBLEM 8
 
 
@@ -346,7 +354,8 @@ def time_per_word(words, timestamps_per_player):
     """
     tpp = timestamps_per_player  # A shorter name (for convenience)
     # BEGIN PROBLEM 9
-    times = []  # You may remove this line
+    f = lambda tts: [(tts[i] - tts[i - 1]) for i in range(1, len(tts))]
+    times = [f(tts) for tts in tpp]
     # END PROBLEM 9
     return {'words': words, 'times': times}
 
@@ -374,6 +383,16 @@ def fastest_words(words_and_times):
     word_indices = range(len(words))    # contains an *index* for each word
     # BEGIN PROBLEM 10
     "*** YOUR CODE HERE ***"
+    time_player_pair_per_word = [[(get_time(times, player_indice, word_indice), player_indice) \
+     for player_indice in player_indices] for word_indice in word_indices]
+    fastest_player_per_word = [min(time_player_pair, key = lambda x:x[0])[1] \
+                               for time_player_pair in time_player_pair_per_word]
+
+    result = [[] for _ in player_indices]
+
+    for word_index, fastest_player in enumerate(fastest_player_per_word):
+        result[fastest_player].append(words[word_index])
+    return result
     # END PROBLEM 10
 
 
@@ -399,7 +418,7 @@ def get_time(times, player_num, word_index):
     return times[player_num][word_index]
 
 
-enable_multiplayer = False  # Change to True when you're ready to race.
+enable_multiplayer = True  # Change to True when you're ready to race.
 
 ##########################
 # Command Line Interface #
